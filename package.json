@@ -1,0 +1,25 @@
+{
+  "name": "start_shader",
+  "version": "1.0.0",
+  "description": "start shader guide",
+  "main": "app.js",
+  "scripts": {
+    "start": "concurrently \"nodemon app.js\" \"webpack --mode development --watch\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com:henteko/start_shader.git"
+  },
+  "author": "henteko",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "three-js": "^79.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^4.0.1",
+    "nodemon": "^1.18.4",
+    "webpack": "^4.19.1",
+    "webpack-cli": "^3.1.0"
+  }
+}
