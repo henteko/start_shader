@@ -14,7 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.3",
-    "three-js": "^79.0.0"
+    "three-js": "^79.0.0",
+    "vox.js": "henteko/vox.js#master"
   },
   "devDependencies": {
     "concurrently": "^4.0.1",

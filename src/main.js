@@ -1,8 +1,8 @@
-const THREE = require('three-js')([
-    'OrbitControls',
-    'OBJLoader',
-    'MTLLoader'
-]);
+const THREE = require('three-js')([ 'OrbitControls' ]);
+const vox = require('vox.js');
+
+const vertextShader = require('./vertex_shader');
+const fragmentShader = require('./fragment_shader');
 
 const width = window.innerWidth;
 const height = window.innerHeight;
@@ -16,31 +16,28 @@ function init() {
     camera = new THREE.PerspectiveCamera( 30, width / height, 1, 5000 );
     camera.position.set(126, 256, 412);
 
-    const mtlLoader = new THREE.MTLLoader();
-    mtlLoader.setBaseUrl( "http://localhost:3000/" );
-    mtlLoader.load( 'boy.mtl', function( materials ) {
-        materials.preload();
-        const objLoader = new THREE.OBJLoader();
-        objLoader.setMaterials( materials );
-        objLoader.load( 'boy.obj', function ( object ) {
-            objmodel = object.clone();
-            objmodel.scale.set(8, 8, 8);
+    const parser = new vox.Parser();
+    parser.parse("boy.vox").then(function(voxelData) {
+        const builder = new vox.MeshBuilder(voxelData, {voxelSize: 5});
+        const uniforms = {
+            uTex: {type:'t', value: builder.getTexture()},
+        };
+        const material = new THREE.ShaderMaterial({
+            transparent: true,
+            uniforms: uniforms,
+            vertexShader: vertextShader(),
+            fragmentShader: fragmentShader()
+        });
 
-            obj = new THREE.Object3D();
-            obj.add(objmodel);
+        const mesh = new THREE.Mesh(builder.geometry, material);
+        scene.add( mesh );
 
-            scene.add(obj);
+        renderer = createRenderer(width, height);
 
-            const light = new THREE.AmbientLight(0xFFFFFF);
-            scene.add( light );
+        controls = new THREE.OrbitControls( camera, renderer.domElement );
+        controls.target.set( 0, 50, 0 );
 
-            renderer = createRenderer(width, height);
-
-            controls = new THREE.OrbitControls( camera, renderer.domElement );
-            controls.target.set( 0, 50, 0 );
-
-            animate();
-        }, function(){}, function(){} );
+        animate()
     });
 }
 function createRenderer(width, height) {
