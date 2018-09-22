@@ -1,12 +1,19 @@
 function vertextShader() {
     return `
   varying vec2 vUv;
-  varying float alpha;
+  uniform float uTime;
+  
+  const float power = 30.0;
+  const float speed = 13.0;
   
   void main() {
     vUv = uv;
-    alpha = position.y / 100.0;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+    
+    vec3 newPos = position;
+    float gray = (newPos.y / 100.0);
+    newPos.x += sin(uTime * speed) * power * (gray * gray);
+    
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( newPos, 1.0 );
   }
 `;
 }
