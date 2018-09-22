@@ -19,6 +19,11 @@ function init() {
     renderer = createRenderer(width, height);
     controls = new THREE.OrbitControls( camera, renderer.domElement );
     controls.target.set( 0, 50, 0 );
+    uniforms.uResolution = {
+        type: "v2",
+        value: new THREE.Vector2(renderer.domElement.width, renderer.domElement.height)
+    };
+
     animate();
 
     const parser = new vox.Parser();
