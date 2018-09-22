@@ -11,6 +11,7 @@ let camera;
 let renderer;
 let controls;
 let uniforms = {};
+var addTime = 0.01;
 
 function init() {
     scene = new THREE.Scene();
@@ -23,6 +24,7 @@ function init() {
         type: "v2",
         value: new THREE.Vector2(renderer.domElement.width, renderer.domElement.height)
     };
+    uniforms.uTime = { type: "f", value: 0.0 };
 
     animate();
 
@@ -55,6 +57,15 @@ function createRenderer(width, height) {
 }
 
 function animate() {
+    uniforms.uTime.value += addTime;
+
+    if (uniforms.uTime.value > 1.0) {
+        addTime = -0.01;
+    }
+    if (uniforms.uTime.value < 0.0) {
+        addTime = 0.01;
+    }
+
     controls.update();
     requestAnimationFrame( animate );
     renderer.render( scene, camera );
