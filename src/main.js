@@ -52,10 +52,6 @@ function createRenderer(width, height) {
 function animate() {
     controls.update();
     requestAnimationFrame( animate );
-    render();
-}
-
-function render() {
     renderer.render( scene, camera );
 }
 
